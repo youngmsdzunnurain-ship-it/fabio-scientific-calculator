@@ -38,7 +38,7 @@ export default function AppLayout() {
         </Link>
 
         <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-          Workspace
+          {t("workspace", lang)}
         </p>
         <nav className="space-y-1" aria-label="Main navigation">
           {navItems.map((item) => {
@@ -59,8 +59,8 @@ export default function AppLayout() {
 
         <div className="mt-auto rounded-2xl border border-primary/15 bg-primary/5 p-4">
           <Sparkles size={18} className="text-primary mb-2" />
-          <p className="text-xs font-semibold">Made for curious minds</p>
-          <p className="text-[11px] text-muted-foreground mt-1">Calculate, explore and keep your formulas close.</p>
+          <p className="text-xs font-semibold">{t("madeForCuriousMinds", lang)}</p>
+          <p className="text-[11px] text-muted-foreground mt-1">{t("keepFormulasClose", lang)}</p>
         </div>
       </aside>
 
@@ -70,7 +70,7 @@ export default function AppLayout() {
             <p className="text-sm font-semibold text-muted-foreground">
               {t(navItems.find((item) => item.path === location.pathname)?.labelKey || "calculator", lang)}
             </p>
-            <span className="text-xs text-muted-foreground">Precision in every calculation</span>
+            <span className="text-xs text-muted-foreground">{t("precision", lang)}</span>
           </div>
         </header>
         <main className="flex-1 pb-20 md:pb-8">
