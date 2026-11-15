@@ -45,7 +45,7 @@ const getAppParams = () => {
   }
   return {
     appId: getAppParamValue("app_id", {
-      defaultValue: import.meta.env.VITE_BASE44_APP_ID,
+      defaultValue: import.meta.env.VITE_BASE44_APP_ID || "6a46c276fe4fb0c072b9ff4e",
     }),
     token: getAppParamValue("access_token", { removeFromUrl: true }),
     fromUrl: getAppParamValue("from_url", {
@@ -55,7 +55,7 @@ const getAppParams = () => {
       defaultValue: import.meta.env.VITE_BASE44_FUNCTIONS_VERSION,
     }),
     appBaseUrl: getAppParamValue("app_base_url", {
-      defaultValue: import.meta.env.VITE_BASE44_APP_BASE_URL,
+      defaultValue: import.meta.env.VITE_BASE44_APP_BASE_URL || "https://young-math-flow.base44.app",
     }),
   };
 };
