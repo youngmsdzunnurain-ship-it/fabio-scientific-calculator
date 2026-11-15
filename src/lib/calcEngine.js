@@ -56,6 +56,8 @@ function tokenize(expression) {
     .replace(/[−]/g, "-")
     .replace(/²/g, "^2")
     .replace(/³/g, "^3")
+    .replace(/√\s*(\d+(?:\.\d*)?|\.\d+)/g, "sqrt($1)")
+    .replace(/∛\s*(\d+(?:\.\d*)?|\.\d+)/g, "cbrt($1)")
     .replace(/√(?=\s*\()/g, "sqrt")
     .replace(/∛(?=\s*\()/g, "cbrt");
 
@@ -69,37 +71,45 @@ function tokenize(expression) {
       continue;
     }
 
-    const numberMatch = rest.match(/^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/);
-    if (numberMatch) {
-      const value = Number(numberMatch[0]);
-      if (!Number.isFinite(value)) throw new Error("Invalid number");
-      tokens.push({ type: "number", value });
-      position += numberMatch[0].length;
+    const mathConstantMatch = rest.match(/^Math\.(PI|E)\b/);
+    if (mathConstantMatch) {
+      tokens.push({
+        type: "constant",
+        value: mathConstantMatch[1] === "PI" ? Math.PI : Math.E,
+      });
+      position += mathConstantMatch[0].length;
     } else {
-      const identifierMatch = rest.match(/^[a-zA-Z]+|^π/);
-      if (identifierMatch) {
-        const name = identifierMatch[0].toLowerCase();
-        if (name === "e" || name === "π" || name === "pi") {
-          tokens.push({ type: "constant", value: name === "e" ? Math.E : Math.PI });
-        } else if (Object.hasOwn(FUNCTIONS, name)) {
-          tokens.push({ type: "function", value: name });
-        } else {
-          throw new Error("Unknown function or constant");
-        }
-        position += identifierMatch[0].length;
+      const numberMatch = rest.match(/^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/);
+      if (numberMatch) {
+        const value = Number(numberMatch[0]);
+        if (!Number.isFinite(value)) throw new Error("Invalid number");
+        tokens.push({ type: "number", value });
+        position += numberMatch[0].length;
       } else {
-        const char = source[position];
-        if ("+-*/^!%()".includes(char)) {
-          tokens.push({
-            type: char === "(" ? "lparen" : char === ")" ? "rparen" : "operator",
-            value: char,
-          });
-          position += 1;
+        const identifierMatch = rest.match(/^[a-zA-Z]+|^π/);
+        if (identifierMatch) {
+          const name = identifierMatch[0].toLowerCase();
+          if (name === "e" || name === "π" || name === "pi") {
+            tokens.push({ type: "constant", value: name === "e" ? Math.E : Math.PI });
+          } else if (Object.hasOwn(FUNCTIONS, name)) {
+            tokens.push({ type: "function", value: name });
+          } else {
+            throw new Error("Unknown function or constant");
+          }
+          position += identifierMatch[0].length;
         } else {
-          throw new Error("Unsupported character");
+          const char = source[position];
+          if ("+-*/^!%()".includes(char)) {
+            tokens.push({
+              type: char === "(" ? "lparen" : char === ")" ? "rparen" : "operator",
+              value: char,
+            });
+            position += 1;
+          } else {
+            throw new Error("Unsupported character");
+          }
         }
       }
-    }
     }
 
     if (tokens.length > MAX_TOKENS) throw new Error("Expression is too complex");
