@@ -1,0 +1,11 @@
+{
+  "appId": "com.youngmsd.fabioscientificcalculator",
+  "appName": "Fabio Scientific Calculator",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}

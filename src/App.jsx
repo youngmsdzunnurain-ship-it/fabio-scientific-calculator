@@ -10,9 +10,9 @@ import {
 import PageNotFound from "./lib/PageNotFound";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import { AppProvider } from "@/lib/AppContext";
-import UserNotRegisteredError from "@/components/UserNotRegisteredError";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import ScrollToTop from "./components/ScrollToTop";
+import UserNotRegisteredError from "./UserNotRegistered";
+import ProtectedRoute from "./ProtectedRoute";
+import ScrollToTop from "./ScrollToTop";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import ForgotPassword from "@/pages/ForgotPassword";

@@ -190,7 +190,9 @@ export default function VoiceInput({ onResult, lang }) {
     return () => {
       try {
         recognition.abort();
-      } catch (e) {}
+      } catch {
+        // Recognition may already be inactive when the component unmounts.
+      }
     };
   }, [lang, onResult]);
 

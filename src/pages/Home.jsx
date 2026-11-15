@@ -287,7 +287,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex flex-col h-full min-h-[calc(100vh-64px)]">
+    <div className="flex flex-col h-full min-h-[calc(100vh-64px)] w-full max-w-3xl mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between px-4 pt-4 pb-1">
         <h1 className="text-sm font-heading font-bold text-foreground tracking-tight">
