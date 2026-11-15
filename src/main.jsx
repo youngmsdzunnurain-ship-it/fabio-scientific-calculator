@@ -1,8 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Capacitor } from "@capacitor/core";
+import { registerPwaInstallEvents } from "@/lib/pwaInstall";
 import App from "@/App.jsx";
 import "@/index.css";
+
+registerPwaInstallEvents();
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 
