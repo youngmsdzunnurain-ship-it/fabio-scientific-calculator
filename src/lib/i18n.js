@@ -47,6 +47,7 @@ const translations = {
     // Settings
     language: "Language",
     theme: "Theme",
+    accentColor: "Accent colour",
     lightMode: "Light",
     darkMode: "Dark",
     english: "English",
@@ -139,6 +140,7 @@ const translations = {
     // Settings
     language: "اللغة",
     theme: "المظهر",
+    accentColor: "لون الواجهة",
     lightMode: "فاتح",
     darkMode: "داكن",
     english: "English",
