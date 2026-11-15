@@ -98,7 +98,7 @@ export default function Settings() {
             <Palette size={18} className="text-muted-foreground" />
             <span className="text-sm font-medium">{t("accentColor", lang)}</span>
           </div>
-          <div className="grid grid-cols-6 sm:grid-cols-12 gap-3">
+          <div className="grid grid-cols-6 sm:grid-cols-12 gap-2">
             {accentThemes.map((palette) => (
               <button
                 key={palette.id}
@@ -107,7 +107,7 @@ export default function Settings() {
                 aria-label={`${palette.name} ${t("accentColor", lang)}`}
                 aria-pressed={accentTheme === palette.id}
                 onClick={() => savePreferences({ accent_theme: palette.id })}
-                className={`h-9 w-9 rounded-full border-2 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${accentTheme === palette.id ? "border-foreground ring-2 ring-primary ring-offset-2 ring-offset-card" : "border-transparent"}`}
+                className={`h-10 w-10 rounded-full border-2 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${accentTheme === palette.id ? "border-foreground ring-2 ring-primary ring-offset-2 ring-offset-card" : "border-transparent"}`}
                 style={{ backgroundColor: palette.swatch }}
               />
             ))}
