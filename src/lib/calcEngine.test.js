@@ -13,7 +13,7 @@ test("supports constants and implicit multiplication", () => {
   assert.equal(evaluate("2π").value, "6.28318530718");
   assert.equal(evaluate("2(3 + 4)").value, "14");
   assert.equal(evaluate("(2 + 3)(4)").value, "20");
-  assert.equal(evaluate("2e").value, String(2 * Math.E));
+  assert.equal(evaluate("2e").value, "5.43656365692");
 });
 
 test("supports degree and radian trigonometry", () => {
@@ -28,7 +28,7 @@ test("supports roots, logarithms, powers, and percentages", () => {
   assert.equal(evaluate("∛(27)").value, "3");
   assert.equal(evaluate("log(1000)").value, "3");
   assert.equal(evaluate("ln(e)").value, "1");
-  assert.equal(evaluate("EXP(1)").value, String(Math.E));
+  assert.equal(evaluate("EXP(1)").value, "2.71828182846");
   assert.equal(evaluate("50% × 200").value, "100");
 });
 
