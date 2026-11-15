@@ -14,6 +14,10 @@ test("supports constants and implicit multiplication", () => {
   assert.equal(evaluate("2(3 + 4)").value, "14");
   assert.equal(evaluate("(2 + 3)(4)").value, "20");
   assert.equal(evaluate("2e").value, "5.43656365692");
+  assert.equal(evaluate("Math.PI").value, "3.14159265359");
+  assert.equal(evaluate("Math.E").value, "2.71828182846");
+  assert.equal(evaluate("√25").value, "5");
+  assert.equal(evaluate("∛27").value, "3");
 });
 
 test("supports degree and radian trigonometry", () => {
