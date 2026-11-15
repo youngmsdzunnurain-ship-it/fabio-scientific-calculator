@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Download, CheckCircle2, Smartphone } from "lucide-react";
+import { useAppContext } from "@/lib/AppContext";
+import { t } from "@/lib/i18n";
 import {
   clearPwaInstallPrompt,
   getPwaInstallState,
@@ -7,6 +9,7 @@ import {
 } from "@/lib/pwaInstall";
 
 export default function InstallAppCard() {
+  const { lang } = useAppContext();
   const [installPrompt, setInstallPrompt] = useState(() => getPwaInstallState().prompt);
   const [installed, setInstalled] = useState(() => getPwaInstallState().installed);
   const [installing, setInstalling] = useState(false);
@@ -43,24 +46,22 @@ export default function InstallAppCard() {
           {installed ? <CheckCircle2 size={20} /> : <Smartphone size={20} />}
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="text-sm font-semibold">Install Fabio</h2>
+          <h2 className="text-sm font-semibold">{t("installApp", lang)}</h2>
           <p className="text-xs text-muted-foreground mt-1">
-            {installed
-              ? "Fabio is installed on this device."
-              : "Add Fabio to your home screen for a focused, app-like experience."}
+            {installed ? t("installedOnDevice", lang) : t("installDescription", lang)}
           </p>
           {installPrompt ? (
             <button
               type="button"
               onClick={handleInstall}
               disabled={installing}
-              className="mt-3 inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">
+              className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-3 py-2.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">
               <Download size={14} />
-              {installing ? "Opening installer…" : "Install app"}
+              {installing ? t("installing", lang) : t("installAppButton", lang)}
             </button>
           ) : !installed ? (
             <p className="text-[11px] text-muted-foreground mt-2">
-              If your browser supports installation, open its menu and choose “Install app” or “Add to Home Screen”.
+              {t("installMenuInstructions", lang)}
             </p>
           ) : null}
         </div>
