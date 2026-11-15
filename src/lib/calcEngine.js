@@ -104,6 +104,12 @@ function tokenize(expression) {
     if (tokens.length > MAX_TOKENS) throw new Error("Expression is too complex");
   }
 
+  for (let index = 1; index < tokens.length; index += 1) {
+    if (tokens[index - 1].type === "number" && tokens[index].type === "number") {
+      throw new Error("Adjacent numeric literals are invalid");
+    }
+  }
+
   const expanded = [];
   const endsValue = (token) =>
     token.type === "number" ||
