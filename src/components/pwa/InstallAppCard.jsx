@@ -1,33 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Download, CheckCircle2, Smartphone } from "lucide-react";
+import {
+  clearPwaInstallPrompt,
+  getPwaInstallState,
+  subscribePwaInstall,
+} from "@/lib/pwaInstall";
 
 export default function InstallAppCard() {
-  const [installPrompt, setInstallPrompt] = useState(null);
-  const [installed, setInstalled] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState(() => getPwaInstallState().prompt);
+  const [installed, setInstalled] = useState(() => getPwaInstallState().installed);
   const [installing, setInstalling] = useState(false);
 
   useEffect(() => {
     const standalone =
       window.matchMedia?.("(display-mode: standalone)").matches ||
       window.navigator.standalone === true;
-    setInstalled(standalone);
+    setInstalled((current) => current || standalone);
 
-    function handlePrompt(event) {
-      event.preventDefault();
-      setInstallPrompt(event);
-    }
-
-    function handleInstalled() {
-      setInstalled(true);
-      setInstallPrompt(null);
-    }
-
-    window.addEventListener("beforeinstallprompt", handlePrompt);
-    window.addEventListener("appinstalled", handleInstalled);
-    return () => {
-      window.removeEventListener("beforeinstallprompt", handlePrompt);
-      window.removeEventListener("appinstalled", handleInstalled);
-    };
+    return subscribePwaInstall(({ prompt, installed: appInstalled }) => {
+      setInstallPrompt(prompt);
+      if (appInstalled) setInstalled(true);
+    });
   }, []);
 
   async function handleInstall() {
@@ -36,8 +29,8 @@ export default function InstallAppCard() {
     try {
       await installPrompt.prompt();
       const choice = await installPrompt.userChoice;
+      clearPwaInstallPrompt();
       if (choice?.outcome === "accepted") setInstalled(true);
-      setInstallPrompt(null);
     } finally {
       setInstalling(false);
     }
