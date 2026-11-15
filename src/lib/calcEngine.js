@@ -100,6 +100,7 @@ function tokenize(expression) {
         }
       }
     }
+    }
 
     if (tokens.length > MAX_TOKENS) throw new Error("Expression is too complex");
   }
