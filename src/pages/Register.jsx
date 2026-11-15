@@ -10,8 +10,8 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import AuthLayout from "@/components/AuthLayout";
-import GoogleIcon from "@/components/GoogleIcon";
+import AuthLayout from "@/AuthLayout";
+import GoogleIcon from "@/GoogleIcon";
 import { toast } from "@/components/ui/use-toast";
 
 export default function Register() {
