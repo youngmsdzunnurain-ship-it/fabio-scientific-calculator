@@ -1,77 +1,65 @@
-# Base44 Project
+# Fabio Scientific Calculator
 
-Use this repository to run and edit the app locally, then publish changes back through Base44.
+A bilingual scientific calculator built with React, Vite, Tailwind CSS and the Base44 backend.
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+## Features
 
-## Prerequisites
+- Standard and scientific calculation modes
+- Degree and radian trigonometry
+- Memory operations, calculation history and saved formulas
+- Voice entry where browser speech recognition is available
+- English and Arabic interface
+- Light and dark appearance with twelve accent colour palettes
+- Responsive desktop workspace and mobile navigation
+- Installable Progressive Web App (PWA)
+- Android application packaging with Capacitor
 
-1. Clone the repository using the project's Git URL.
-2. Navigate to the project directory.
-3. Install dependencies: `npm install`.
-4. Install the Base44 CLI: `npm install -g base44@latest`.
+## Local development
 
-See the [Base44 CLI docs](https://docs.base44.com/developers/references/cli/get-started/overview) if you want to run Base44 commands directly.
-
-## Run Locally
-
-Run the full local development environment from the project root:
-
-```bash
-base44 dev
-```
-
-`base44 dev` starts the local Base44 development backend and, when this app is configured for it, also starts the frontend dev server for you. Use the frontend URL printed by the command.
-
-For example, when the Base44 project config includes a `serveCommand`, `base44 dev` can launch the frontend too:
-
-```json5
-{
-  site: {
-    serveCommand: "npm run dev",
-  },
-}
-```
-
-In a Base44 project this lives in `base44/config.jsonc`.
-
-## Run Only The Frontend
-
-If you only want to work on the frontend against the hosted Base44 backend, run:
+Requirements: Node.js 22 or newer.
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
 ```
 
-Open the local URL printed by Vite.
+The Base44 app ID and app URL in `.env.example` are public configuration values. Keep access tokens and any private credentials out of source control.
 
-## Use The Hosted Backend
-
-For frontend-only development, create or update `.env.local` in the project root:
+## Verification
 
 ```bash
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=https://your-app.base44.app
+npm test
+npm run lint
+npm run build
 ```
 
-`VITE_BASE44_APP_ID` identifies the Base44 app.
+## Web deployment on Netlify
 
-`VITE_BASE44_APP_BASE_URL` tells the Base44 Vite plugin where to send local `/api` requests. Point it at your deployed Base44 app URL when you want the local frontend to use the hosted backend.
+The repository includes `netlify.toml`. Connect this repository to Netlify and use:
 
-When you use `base44 dev`, the command injects the local Base44 values for you, so `.env.local` is mainly needed for frontend-only workflows.
+- Build command: `npm run build`
+- Publish directory: `dist`
 
-## Publish Your Changes
+The SPA rewrite is configured for React Router. HTTPS is required for PWA installation.
 
-After pushing your changes to git, open the Base44 dashboard and publish the app:
+## Install on phones
+
+Open the deployed HTTPS website in a supported mobile browser and choose **Install app** or **Add to Home Screen**. The app manifest and service worker provide the installable shell. Account sign-in, saved history, formula sync and scan services still require a network connection.
+
+## Android APK
+
+Capacitor is configured in `capacitor.config.json`. To build locally with Android Studio and the Android SDK installed:
 
 ```bash
-base44 dashboard open
+npm run build
+npx cap add android
+npx cap sync android
+npx cap open android
 ```
 
-## Docs & Support
+A GitHub Actions workflow also builds a debug APK and uploads it as a workflow artifact after tests, lint and the web build pass. Tagged pushes (`v*`) publish the APK as a GitHub Release asset.
 
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
+## Backend and privacy
 
-Base44 CLI command reference: [https://docs.base44.com/developers/references/cli/commands/introduction](https://docs.base44.com/developers/references/cli/commands/introduction)
-
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+The calculator uses the existing Base44 app for authentication and cloud entities. Static hosting does not replace that backend. Keep the Base44 app available and ensure its access policy matches the intended audience before distributing the web or Android clients.
