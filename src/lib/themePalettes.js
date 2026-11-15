@@ -17,6 +17,41 @@ export function isAccentTheme(value) {
   return accentThemes.some((theme) => theme.id === value);
 }
 
+function hslToRgb(hue, saturation, lightness) {
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const hueSection = hue / 60;
+  const secondary = chroma * (1 - Math.abs((hueSection % 2) - 1));
+  const offset = lightness - chroma / 2;
+  let rgb;
+
+  if (hueSection < 1) rgb = [chroma, secondary, 0];
+  else if (hueSection < 2) rgb = [secondary, chroma, 0];
+  else if (hueSection < 3) rgb = [0, chroma, secondary];
+  else if (hueSection < 4) rgb = [0, secondary, chroma];
+  else if (hueSection < 5) rgb = [secondary, 0, chroma];
+  else rgb = [chroma, 0, secondary];
+
+  return rgb.map((channel) => channel + offset);
+}
+
+function relativeLuminance(rgb) {
+  const linear = rgb.map((channel) =>
+    channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4
+  );
+  return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+}
+
+export function getPrimaryForeground(primaryHsl) {
+  const [hue, saturation, lightness] = primaryHsl.match(/[\d.]+/g).map(Number);
+  const backgroundLuminance = relativeLuminance(
+    hslToRgb(hue, saturation / 100, lightness / 100)
+  );
+  const darkLuminance = 0;
+  const whiteContrast = 1.05 / (backgroundLuminance + 0.05);
+  const darkContrast = (backgroundLuminance + 0.05) / (darkLuminance + 0.05);
+  return whiteContrast >= darkContrast ? "0 0% 100%" : "0 0% 0%";
+}
+
 export function applyAccentTheme(themeId, mode = "light") {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
@@ -25,6 +60,7 @@ export function applyAccentTheme(themeId, mode = "light") {
 
   root.dataset.accent = selected.id;
   root.style.setProperty("--primary", primary);
+  root.style.setProperty("--primary-foreground", getPrimaryForeground(primary));
   root.style.setProperty("--ring", primary);
   root.style.setProperty("--accent", accent);
   root.style.setProperty("--accent-foreground", accentForeground);
