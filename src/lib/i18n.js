@@ -1,6 +1,6 @@
 const translations = {
   en: {
-    appName: "Young MSD Calculator",
+    appName: "Fabio Scientific Calculator",
     appSubtitle: "MSD Calculator",
     calculator: "Calculator",
     history: "History",
@@ -93,7 +93,7 @@ const translations = {
     formulaSaved: "Formula saved!",
   },
   ar: {
-    appName: "حاسبة يونج MSD",
+    appName: "حاسبة فابيو العلمية",
     appSubtitle: "حاسبة MSD",
     calculator: "الآلة الحاسبة",
     history: "السجل",
