@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   verify-and-build:
@@ -24,7 +24,23 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund
+          fi
+
+      - name: Commit generated lockfile on feature branch
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/feat/')
+        run: |
+          if ! git ls-files --error-unmatch package-lock.json >/dev/null 2>&1 && [ -f package-lock.json ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "Add npm dependency lockfile"
+            git push
+          fi
 
       - name: Test calculator engine
         run: npm test
